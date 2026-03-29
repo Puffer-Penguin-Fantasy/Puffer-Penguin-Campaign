@@ -1,0 +1,94 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Google Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --color-google-blue: #4285F4;
+  --color-google-red: #EA4335;
+  --color-google-yellow: #FBBC04;
+  --color-google-green: #38A852;
+  --color-google-purple: #BB55A1;
+  --color-google-lime: #B9D84C;
+}
+
+@layer base {
+  body {
+    @apply bg-black text-white font-sans antialiased;
+  }
+}
+
+@property --gradient-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes rotate-gradient {
+  from { --gradient-angle: 0deg; }
+  to { --gradient-angle: 360deg; }
+}
+
+.rainbow-border {
+  position: relative;
+  border: 2px solid transparent;
+  background-image:
+    linear-gradient(#000, #000),
+    conic-gradient(from var(--gradient-angle), 
+      #4285f4, #bb55a1, #ea4335, #fbbc04, #b9d84c, #38a852, #4285f4);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  animation: rotate-gradient 7s linear infinite;
+}
+
+.rainbow-border-hover:hover {
+  background-image:
+    linear-gradient(#111, #111),
+    conic-gradient(from var(--gradient-angle), 
+      #4285f4, #bb55a1, #ea4335, #fbbc04, #b9d84c, #38a852, #4285f4);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 1s ease-in-out forwards;
+}
+
+.animate-slide-up {
+  animation: slideInUp 0.5s ease-out forwards;
+}
+
+/* Glassmorphism */
+.glass {
+  @apply bg-black/60 backdrop-blur-sm border border-white/10;
+}
+
+/* Hide scrollbar but allow scrolling */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.rainbow-text {
+  background: linear-gradient(to right, #4285f4, #bb55a1, #ea4335, #fbbc04, #b9d84c, #38a852, #4285f4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% auto;
+  animation: rainbow-scroll 5s linear infinite;
+  display: inline-block;
+}
+
+@keyframes rainbow-scroll {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
