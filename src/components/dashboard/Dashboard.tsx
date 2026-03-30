@@ -7,6 +7,7 @@ import { FastAverageColor } from 'fast-average-color';
 import { getTotalReferrals } from '../../services/referralService';
 import { useSound } from '../../hooks/useSound';
 import { LevelUpOverlay } from '../effects/LevelUpOverlay';
+import { getAllQuestStatuses, saveQuestStatus, QuestStatus } from '../../services/questService';
 
 const fac = new FastAverageColor();
 
@@ -89,24 +90,24 @@ export const Dashboard: React.FC = () => {
   const { disconnect } = useWallet();
   const { playClick, playPointGained } = useSound();
   const { data: arcticData, isLoading: arcticLoading } = useArcticPenguin(address);
-  const [q2Status, setQ2Status] = useState<'idle' | 'verifying' | 'completed'>(() => {
-    return (localStorage.getItem('q2Status') as any) || 'idle';
-  });
-  const [q3Status, setQ3Status] = useState<'idle' | 'verifying' | 'completed'>(() => {
-    return (localStorage.getItem('q3Status') as any) || 'idle';
-  });
+  const [q2Status, setQ2Status] = useState<QuestStatus>('idle');
+  const [q3Status, setQ3Status] = useState<QuestStatus>('idle');
   const [showLevelUp, setShowLevelUp] = useState(false);
   const [lastLevelUpInfo, setLastLevelUpInfo] = useState<{ name: string; points: number } | null>(null);
   const [glowColor, setGlowColor] = useState<string | null>(null);
 
-  // Persist mission states
+  // Persist mission states to Firebase
   useEffect(() => {
-    localStorage.setItem('q2Status', q2Status);
-  }, [q2Status]);
+    if (!address) return;
 
-  useEffect(() => {
-    localStorage.setItem('q3Status', q3Status);
-  }, [q3Status]);
+    const fetchStatuses = async () => {
+      const statuses = await getAllQuestStatuses(address);
+      if (statuses['follow-arctic']) setQ2Status(statuses['follow-arctic']);
+      if (statuses['follow-column']) setQ3Status(statuses['follow-column']);
+    };
+
+    fetchStatuses();
+  }, [address]);
 
   // Extract dominant color from NFT image for dynamic background
   useEffect(() => {
@@ -124,12 +125,19 @@ export const Dashboard: React.FC = () => {
     }
   }, [arcticData.nftDetails?.image]);
 
-  const handleFollow = (url: string, statusSetter: (s: 'idle' | 'verifying' | 'completed') => void, questName: string, points: number) => {
+  const handleFollow = async (url: string, statusSetter: (s: QuestStatus) => void, questName: string, points: number, questId: string) => {
     window.open(url, '_blank');
     statusSetter('verifying');
+    if (address) {
+      await saveQuestStatus(address, questId, 'verifying');
+    }
+
     // Simulate verification delay
-    setTimeout(() => {
+    setTimeout(async () => {
       statusSetter('completed');
+      if (address) {
+        await saveQuestStatus(address, questId, 'completed');
+      }
       
       // Calculate count *after* this completion
       const newCount = (arcticData.hasNFT ? 1 : 0) + 
@@ -199,7 +207,7 @@ export const Dashboard: React.FC = () => {
       points: 50,
       icon: <Link2 size={28} />,
       actionText: 'Follow on X',
-      onAction: () => handleFollow('https://x.com/arctic_pengu1n', setQ2Status, 'Follow @arctic_pengu1n', 50)
+      onAction: () => handleFollow('https://x.com/arctic_pengu1n', setQ2Status, 'Follow @arctic_pengu1n', 50, 'follow-arctic')
     },
     {
       id: 'follow-column',
@@ -211,7 +219,7 @@ export const Dashboard: React.FC = () => {
       points: 50,
       icon: <Link2 size={28} />,
       actionText: 'Follow on X',
-      onAction: () => handleFollow('https://x.com/ColumnWallet', setQ3Status, 'Follow @ColumnWallet', 50)
+      onAction: () => handleFollow('https://x.com/ColumnWallet', setQ3Status, 'Follow @ColumnWallet', 50, 'follow-column')
     },
     {
       id: 'arctic-console',

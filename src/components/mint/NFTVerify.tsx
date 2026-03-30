@@ -7,6 +7,7 @@ import { useReferral } from '../../hooks/useReferral';
 import { creditReferral } from '../../services/referralService';
 import { useSound } from '../../hooks/useSound';
 import { LevelUpOverlay } from '../effects/LevelUpOverlay';
+import { saveQuestStatus } from '../../services/questService';
 
 interface NFTVerifyProps {
   leftImage: string;
@@ -44,6 +45,9 @@ export const NFTVerify: React.FC<NFTVerifyProps> = ({ leftImage, onVerified }) =
           setShowLevelUp(true);
           playPointGained();
           processReferralIfValid();
+          if (address) {
+            saveQuestStatus(address, 'hold-nft', 'completed');
+          }
         } else {
           setVerifyStatus('failed');
         }
@@ -57,6 +61,9 @@ export const NFTVerify: React.FC<NFTVerifyProps> = ({ leftImage, onVerified }) =
       setVerifyStatus('success');
       playPointGained();
       processReferralIfValid();
+      if (address) {
+        saveQuestStatus(address, 'hold-nft', 'completed');
+      }
     }
   }, [data.hasNFT, verifyStatus]);
 
