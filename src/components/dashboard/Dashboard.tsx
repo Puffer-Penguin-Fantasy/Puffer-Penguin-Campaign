@@ -63,11 +63,10 @@ const QuestCard: React.FC<QuestCardProps> = ({
           {!isCompleted && !isLocked && actionText && (
             <button
               onClick={() => { playClick(); onAction?.(); }}
-              disabled={isVerifying}
               className="rainbow-border w-full sm:w-auto px-6 sm:px-8 py-2.5 sm:py-3 rounded-full text-white font-medium flex items-center justify-center gap-2 hover:scale-[1.05] transition-all disabled:opacity-50 text-sm sm:text-base"
             >
               {isVerifying ? (
-                <>Verifying... <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" /></>
+                <>Verify Now <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-1" /></>
               ) : (
                 <>{actionText} <span className="text-white/60">→</span></>
               )}
@@ -125,15 +124,9 @@ export const Dashboard: React.FC = () => {
     }
   }, [arcticData.nftDetails?.image]);
 
-  const handleFollow = async (url: string, statusSetter: (s: QuestStatus) => void, questName: string, points: number, questId: string) => {
-    window.open(url, '_blank');
-    statusSetter('verifying');
-    if (address) {
-      await saveQuestStatus(address, questId, 'verifying');
-    }
-
-    // Simulate verification delay
-    setTimeout(async () => {
+  const handleFollow = async (url: string, statusSetter: (s: QuestStatus) => void, questName: string, points: number, questId: string, currentStatus: QuestStatus) => {
+    if (currentStatus === 'verifying') {
+      // Manual verification trigger
       statusSetter('completed');
       if (address) {
         await saveQuestStatus(address, questId, 'completed');
@@ -150,7 +143,15 @@ export const Dashboard: React.FC = () => {
         setShowLevelUp(true);
       }
       playPointGained();
-    }, 2500);
+      return;
+    }
+
+    // Initial click: Open URL and set to verifying
+    window.open(url, '_blank');
+    statusSetter('verifying');
+    if (address) {
+      await saveQuestStatus(address, questId, 'verifying');
+    }
   };
 
   const shortAddress = address
@@ -207,7 +208,7 @@ export const Dashboard: React.FC = () => {
       points: 50,
       icon: <Link2 size={28} />,
       actionText: 'Follow on X',
-      onAction: () => handleFollow('https://x.com/arctic_pengu1n', setQ2Status, 'Follow @arctic_pengu1n', 50, 'follow-arctic')
+      onAction: () => handleFollow('https://x.com/arctic_pengu1n', setQ2Status, 'Follow @arctic_pengu1n', 50, 'follow-arctic', q2Status)
     },
     {
       id: 'follow-column',
@@ -219,7 +220,7 @@ export const Dashboard: React.FC = () => {
       points: 50,
       icon: <Link2 size={28} />,
       actionText: 'Follow on X',
-      onAction: () => handleFollow('https://x.com/ColumnWallet', setQ3Status, 'Follow @ColumnWallet', 50, 'follow-column')
+      onAction: () => handleFollow('https://x.com/ColumnWallet', setQ3Status, 'Follow @ColumnWallet', 50, 'follow-column', q3Status)
     },
     {
       id: 'arctic-console',
