@@ -91,6 +91,7 @@ export const Dashboard: React.FC = () => {
   const { data: arcticData, isLoading: arcticLoading } = useArcticPenguin(address);
   const [q2Status, setQ2Status] = useState<QuestStatus>('idle');
   const [q3Status, setQ3Status] = useState<QuestStatus>('idle');
+  const [q4Status, setQ4Status] = useState<QuestStatus>('idle');
   const [showLevelUp, setShowLevelUp] = useState(false);
   const [lastLevelUpInfo, setLastLevelUpInfo] = useState<{ name: string; points: number } | null>(null);
   const [glowColor, setGlowColor] = useState<string | null>(null);
@@ -103,6 +104,7 @@ export const Dashboard: React.FC = () => {
       const statuses = await getAllQuestStatuses(address);
       if (statuses['follow-arctic']) setQ2Status(statuses['follow-arctic']);
       if (statuses['follow-column']) setQ3Status(statuses['follow-column']);
+      if (statuses['join-discord']) setQ4Status(statuses['join-discord']);
     };
 
     fetchStatuses();
@@ -135,7 +137,8 @@ export const Dashboard: React.FC = () => {
       // Calculate count *after* this completion
       const newCount = (arcticData.hasNFT ? 1 : 0) + 
                        (q2Status === 'completed' || statusSetter === setQ2Status ? 1 : 0) + 
-                       (q3Status === 'completed' || statusSetter === setQ3Status ? 1 : 0);
+                       (q3Status === 'completed' || statusSetter === setQ3Status ? 1 : 0) + 
+                       (q4Status === 'completed' || statusSetter === setQ4Status ? 1 : 0);
 
       // Trigger level up if it's the 1st milestone (Init) or every 4th thereafter (5, 9, 13...)
       if (newCount === 1 || (newCount > 1 && (newCount - 1) % 4 === 0)) {
@@ -178,11 +181,13 @@ export const Dashboard: React.FC = () => {
   const totalPoints = (arcticData.hasNFT ? 100 : 0) +
                      (q2Status === 'completed' ? 50 : 0) +
                      (q3Status === 'completed' ? 50 : 0) +
+                     (q4Status === 'completed' ? 50 : 0) +
                      (totalReferrals * 100);
 
   const completedQuestCount = (arcticData.hasNFT ? 1 : 0) + 
                              (q2Status === 'completed' ? 1 : 0) + 
-                             (q3Status === 'completed' ? 1 : 0);
+                             (q3Status === 'completed' ? 1 : 0) + 
+                             (q4Status === 'completed' ? 1 : 0);
   
   const currentLevel = completedQuestCount === 0 ? 0 : Math.floor((completedQuestCount - 1) / 4) + 1;
 
@@ -223,15 +228,16 @@ export const Dashboard: React.FC = () => {
       onAction: () => handleFollow('https://x.com/ColumnWallet', setQ3Status, 'Follow @ColumnWallet', 50, 'follow-column', q3Status)
     },
     {
-      id: 'arctic-console',
-      title: 'Play the Arctic Console',
-      description: 'Unlock the exclusive Penguin gaming terminal (8,000 PTS required).',
-      isCompleted: false,
-      isLocked: totalPoints < 8000,
-      points: 8000,
+      id: 'join-discord',
+      title: 'Join Discord',
+      description: 'Join the official Discord community to connect with other penguins.',
+      isCompleted: q4Status === 'completed',
+      isLocked: q3Status !== 'completed', // Unlock after Quest 3
+      isVerifying: q4Status === 'verifying',
+      points: 50,
       icon: <Gamepad2 size={28} />,
-      actionText: 'Enter Console',
-      onAction: () => alert('Welcome to the Arctic Console! Game terminal loading...')
+      actionText: 'Join Discord',
+      onAction: () => handleFollow('https://discord.gg/YZWFYRJ2D', setQ4Status, 'Join Discord', 50, 'join-discord', q4Status)
     }
   ];
 
