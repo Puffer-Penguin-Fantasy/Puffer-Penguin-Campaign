@@ -46,6 +46,20 @@ const query = `
   }
 `;
 
+const globalQuery = `
+  query GetCollectionNFTs($collectionId: String!, $limit: Int!) {
+    current_token_datas_v2(
+      where: {collection_id: {_eq: $collectionId}}
+      limit: $limit
+      order_by: {token_name: asc}
+    ) {
+      token_name
+      token_uri
+      token_properties
+    }
+  }
+`;
+
 async function fetchFromEndpoint(endpoint: string, ownerAddress: string) {
   const response = await fetch(endpoint, {
     method: 'POST',
@@ -197,4 +211,58 @@ export function useArcticPenguin(address: string | null | undefined) {
     error,
     refresh: fetchNFTs
   };
+}
+export function useGlobalArcticPenguins(limit: number = 20) {
+  const [nfts, setNfts] = useState<NFTDetails[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchCollection() {
+      try {
+        const response = await fetch(PRIMARY_INDEXER, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            query: globalQuery,
+            variables: {
+              collectionId: ARCTIC_PENGUIN_COLLECTION_ID,
+              limit
+            },
+          }),
+        });
+
+        const data = await response.json();
+        const tokens = data.data?.current_token_datas_v2 || [];
+        
+        const details = await Promise.all(tokens.map(async (token: any) => {
+          let imgUri = '';
+          if (token.token_properties && token.token_properties.image) {
+            imgUri = token.token_properties.image;
+          } else if (token.token_uri) {
+            const metadata = await fetchNFTMetadata(token.token_uri);
+            imgUri = metadata?.image || metadata?.image_url || token.token_uri;
+          }
+
+          if (imgUri.startsWith('ipfs://')) {
+            imgUri = imgUri.replace('ipfs://', 'https://gateway.pinata.cloud/ipfs/');
+          }
+
+          return {
+            name: token.token_name,
+            image: imgUri
+          };
+        }));
+
+        setNfts(details.filter(d => d.image));
+      } catch (error) {
+        console.error("Error fetching global collection:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchCollection();
+  }, [limit]);
+
+  return { nfts, isLoading };
 }

@@ -1,13 +1,23 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Google Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Roboto", "Google Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-xirod: "Xirod", sans-serif;
+  --font-roboto: "Roboto", sans-serif;
   --color-google-blue: #4285F4;
   --color-google-red: #EA4335;
   --color-google-yellow: #FBBC04;
   --color-google-green: #38A852;
   --color-google-purple: #BB55A1;
   --color-google-lime: #B9D84C;
+}
+
+@font-face {
+  font-family: 'Xirod';
+  src: url('./assets/Xirod.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
 
 @layer base {
@@ -66,7 +76,16 @@
 
 /* Glassmorphism */
 .glass {
-  @apply bg-black/60 backdrop-blur-sm border border-white/10;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.glass-dark {
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 /* Hide scrollbar but allow scrolling */
@@ -90,5 +109,17 @@
 @keyframes rainbow-scroll {
   0% { background-position: 0% center; }
   100% { background-position: 200% center; }
+}
+
+.text-glow {
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.font-xirod {
+  font-family: var(--font-xirod);
+}
+
+.font-roboto {
+  font-family: var(--font-roboto);
 }
 

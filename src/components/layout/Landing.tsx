@@ -38,10 +38,10 @@ export const Landing: React.FC<LandingProps> = ({ onWalletConnected }) => {
           initial={{ y: 40, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.8 }}
-          className="text-[50px] md:text-[100px] font-medium leading-[1.1] tracking-tight mb-8"
+          className="text-[40px] md:text-[80px] font-xirod leading-[1.1] tracking-tight mb-8"
         >
           Arctic <br />
-          <span className="text-white font-bold opacity-90">Penguin</span>
+          <span className="text-white opacity-90">Penguin</span>
         </motion.h1>
 
         <motion.p

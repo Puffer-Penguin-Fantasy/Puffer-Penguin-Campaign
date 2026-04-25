@@ -6,6 +6,7 @@ import { Landing } from './components/layout/Landing';
 import { NFTMint } from './components/mint/NFTMint';
 import { NFTVerify } from './components/mint/NFTVerify';
 import { Dashboard } from './components/dashboard/Dashboard';
+import { Home } from './components/layout/Home';
 
 import backgroundVideo from './assets/background.mp4';
 import rightImage from './assets/rightimage.png';
@@ -17,7 +18,7 @@ export default function App() {
   
   const [step, setStep] = useState<Step>(() => {
     const saved = localStorage.getItem('arctic_penguin_step');
-    return (saved as Step) || 'landing';
+    return (saved as Step) || 'home';
   });
   const [minted, setMinted] = useState(() => {
     return localStorage.getItem('arctic_penguin_minted') === 'true';
@@ -32,10 +33,10 @@ export default function App() {
 
   // Handle global logout - redirect to landing (with a grace period for auto-connecters on refresh)
   useEffect(() => {
-    if (mounted && step !== 'landing') {
+    if (mounted && step !== 'landing' && step !== 'home') {
       const gracePeriod = setTimeout(() => {
         if (!isConnecting && !isConnected) {
-          setStep('landing');
+          setStep('home');
           localStorage.removeItem('arctic_penguin_step');
           localStorage.removeItem('arctic_penguin_minted');
         }
@@ -61,8 +62,8 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-black text-white selection:bg-white/20 overflow-x-hidden">
-      {/* Shared Video Background */}
-      {step !== 'dashboard' && (
+      {/* Shared Video Background for Campaign steps */}
+      {(step === 'landing' || step === 'mint' || step === 'verify') && (
         <div className="fixed inset-0 z-0 pointer-events-none">
           <div className="absolute inset-0 bg-black/50 z-10" />
           <video
@@ -79,6 +80,12 @@ export default function App() {
       )}
 
       <AnimatePresence mode="wait">
+        {step === 'home' && (
+          <Home
+            onStartCampaign={() => setStep('landing')}
+          />
+        )}
+
         {step === 'landing' && (
           <Landing
             onWalletConnected={() => setStep('mint')}
