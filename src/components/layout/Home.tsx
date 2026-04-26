@@ -226,28 +226,28 @@ export const Home: React.FC<HomeProps> = ({ onStartCampaign }) => {
           </section>
           
           {/* Test the App / Whitelist Section - Roadmap Card Style */}
-          <section className="mt-20 px-6">
-            <div className="max-w-xl mx-auto">
+          <section className="mt-40 px-6">
+            <div className="max-w-3xl mx-auto">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="relative p-8 rounded-[2rem] bg-zinc-900 border border-white/10 overflow-hidden group"
+                className="relative p-10 md:p-14 rounded-[3rem] bg-zinc-900 border border-white/10 overflow-hidden group shadow-2xl"
               >
                 {/* Stage Indicator */}
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="px-3 py-1 rounded-full bg-white/10 border border-white/20">
-                    <p className="text-[10px] font-roboto tracking-[0.2em] text-white uppercase">Stage 01</p>
+                <div className="flex items-center gap-3 mb-8">
+                  <div className="px-4 py-2 rounded-full bg-white/10 border border-white/20">
+                    <p className="text-xs font-roboto tracking-[0.2em] text-white uppercase">Stage 01</p>
                   </div>
-                  <div className="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent" />
+                  <div className="h-px flex-1 bg-gradient-to-r from-white/20 to-transparent" />
                 </div>
 
-                <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
                   <div className="flex-1">
-                    <h3 className="font-xirod text-xl tracking-[0.1em] text-white mb-2">
+                    <h3 className="font-xirod text-2xl md:text-3xl tracking-[0.1em] text-white mb-4">
                       App <span className="text-white">Tester WL</span>
                     </h3>
-                    <p className="font-roboto text-white text-sm tracking-wide">
+                    <p className="font-roboto text-white text-base md:text-lg tracking-wide leading-relaxed">
                       Join the first wave of beta testers for Puffer Walks.
                     </p>
                   </div>
@@ -256,9 +256,9 @@ export const Home: React.FC<HomeProps> = ({ onStartCampaign }) => {
                     href="https://forms.gle/9fDGwSLKSsS49n5m6"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bg-white text-black px-8 py-3 rounded-full font-xirod text-[10px] tracking-widest hover:scale-105 transition-all whitespace-nowrap"
+                    className="bg-white text-black px-10 py-4 rounded-full font-xirod text-xs md:text-sm tracking-widest hover:scale-105 transition-all whitespace-nowrap"
                   >
-                    Join WL <ArrowRight size={14} className="inline ml-2" />
+                    Join WL <ArrowRight size={18} className="inline ml-2" />
                   </a>
                 </div>
 
@@ -328,10 +328,10 @@ export const Home: React.FC<HomeProps> = ({ onStartCampaign }) => {
               {/* Military Police Pop-out Animation */}
               <motion.div
                 initial={{ y: 100, opacity: 0 }}
-                whileInView={{ y: -260, opacity: 1 }}
+                whileInView={{ y: window.innerWidth < 768 ? -160 : -260, opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.5, duration: 0.8, type: "spring", bounce: 0.4 }}
-                className="absolute -left-6 md:-left-12 top-0 z-0 pointer-events-none"
+                className="absolute -left-4 md:-left-12 top-0 z-0 pointer-events-none"
               >
                 <img 
                   src={militaryPoliceImage} 
@@ -347,7 +347,7 @@ export const Home: React.FC<HomeProps> = ({ onStartCampaign }) => {
                   className="absolute -top-12 -right-16 md:-right-32 bg-white text-black p-4 md:p-6 rounded-3xl rounded-bl-none shadow-2xl min-w-[160px] md:min-w-[240px] border-2 border-black z-20"
                 >
                   <p className="font-roboto font-black text-[8px] md:text-[10px] tracking-tighter mb-1 text-zinc-500 uppercase">Military Police</p>
-                  <p className="font-roboto font-bold text-[10px] md:text-xs leading-tight italic">
+                  <p className="font-roboto font-bold text-[10px] md:text-sm leading-tight italic">
                     "HALT! Have you joined the 1st Stage Whitelist yet? Move it, recruit!"
                   </p>
                 </motion.div>
@@ -357,7 +357,7 @@ export const Home: React.FC<HomeProps> = ({ onStartCampaign }) => {
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
-                className="py-24 px-10 rounded-[3rem] bg-gradient-to-b from-zinc-900 to-black border border-white/5 text-center relative overflow-hidden z-10 shadow-2xl"
+                className="py-32 md:py-40 px-10 rounded-[3rem] md:rounded-[4rem] bg-gradient-to-b from-zinc-900 to-black border border-white/10 text-center relative overflow-hidden z-10 shadow-[0_0_100px_rgba(0,0,0,0.8)]"
               >
                 {/* Background Glow */}
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.05)_0%,transparent_70%)] pointer-events-none" />
