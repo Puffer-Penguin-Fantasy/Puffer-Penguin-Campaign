@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useAccount } from '@razorlabs/razorkit';
+import { Analytics } from '@vercel/analytics/react';
 import { Step } from './types';
 import { Landing } from './components/layout/Landing';
 import { NFTMint } from './components/mint/NFTMint';
@@ -62,6 +63,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-black text-white selection:bg-white/20 overflow-x-hidden">
+      <Analytics />
       {/* Shared Video Background for Campaign steps */}
       {(step === 'landing' || step === 'mint' || step === 'verify') && (
         <div className="fixed inset-0 z-0 pointer-events-none">
