@@ -7,6 +7,7 @@ import { useSound } from '../../hooks/useSound';
 import logoImage from '../../assets/Zeus Penguin7.png';
 import heroImage from '../../assets/hero.png';
 import heroPhoneImage from '../../assets/herophone.jpg';
+import militaryPoliceImage from '../../assets/militarypolice.png';
 import { MotionCarousel } from '../ui/motion-carousel';
 import { EmblaOptionsType } from 'embla-carousel';
 import { useGlobalArcticPenguins } from '../../hooks/useArcticPenguin';
@@ -323,41 +324,71 @@ export const Home: React.FC<HomeProps> = ({ onStartCampaign }) => {
 
           {/* Join the Colony Section */}
           <section className="mt-60 mb-20 px-6">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              className="max-w-5xl mx-auto py-24 px-10 rounded-[3rem] bg-gradient-to-b from-zinc-900 to-black border border-white/5 text-center relative overflow-hidden"
-            >
-              {/* Background Glow */}
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.05)_0%,transparent_70%)] pointer-events-none" />
-              
-              <h2 className="font-xirod text-4xl md:text-6xl tracking-[0.1em] text-white mb-8 leading-tight relative z-10">
-                JOIN THE <br /> <span className="text-white/40">COLONY</span>
-              </h2>
-              <p className="font-roboto text-white/40 text-lg md:text-xl mb-12 max-w-2xl mx-auto tracking-[0.15em] relative z-10">
-                Waddle with us and become part of the fastest-growing community on Movement.
-              </p>
-              
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-6 relative z-10">
-                <a 
-                  href="https://discord.gg/kShG4pkg"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full sm:w-auto bg-white text-black px-12 py-5 rounded-full font-xirod text-sm tracking-widest hover:scale-105 transition-all flex items-center justify-center gap-3"
+            <div className="relative max-w-5xl mx-auto">
+              {/* Military Police Pop-out Animation */}
+              <motion.div
+                initial={{ y: 100, opacity: 0 }}
+                whileInView={{ y: -260, opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.5, duration: 0.8, type: "spring", bounce: 0.4 }}
+                className="absolute -left-6 md:-left-12 top-0 z-0 pointer-events-none"
+              >
+                <img 
+                  src={militaryPoliceImage} 
+                  alt="Military Police" 
+                  className="w-48 md:w-80 h-auto" 
+                />
+                
+                {/* Speech Bubble / Card */}
+                <motion.div
+                  initial={{ scale: 0, opacity: 0 }}
+                  whileInView={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: 1.2, duration: 0.4 }}
+                  className="absolute -top-12 -right-16 md:-right-32 bg-white text-black p-4 md:p-6 rounded-3xl rounded-bl-none shadow-2xl min-w-[160px] md:min-w-[240px] border-2 border-black z-20"
                 >
-                  DISCORD <MessageSquare size={18} />
-                </a>
-                <a 
-                  href="https://x.com/arctic_pengu1n"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full sm:w-auto bg-black text-white border border-white/10 px-12 py-5 rounded-full font-xirod text-sm tracking-widest hover:bg-zinc-900 transition-all flex items-center justify-center gap-3"
-                >
-                  FOLLOW X <Twitter size={18} />
-                </a>
-              </div>
-            </motion.div>
+                  <p className="font-roboto font-black text-[8px] md:text-[10px] tracking-tighter mb-1 text-zinc-500 uppercase">Military Police</p>
+                  <p className="font-roboto font-bold text-[10px] md:text-xs leading-tight italic">
+                    "HALT! Have you joined the 1st Stage Whitelist yet? Move it, recruit!"
+                  </p>
+                </motion.div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                className="py-24 px-10 rounded-[3rem] bg-gradient-to-b from-zinc-900 to-black border border-white/5 text-center relative overflow-hidden z-10 shadow-2xl"
+              >
+                {/* Background Glow */}
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.05)_0%,transparent_70%)] pointer-events-none" />
+                
+                <h2 className="font-xirod text-4xl md:text-6xl tracking-[0.1em] text-white mb-8 leading-tight relative z-10">
+                  JOIN THE <br /> <span className="text-white/40">COLONY</span>
+                </h2>
+                <p className="font-roboto text-white/40 text-lg md:text-xl mb-12 max-w-2xl mx-auto tracking-[0.15em] relative z-10">
+                  Waddle with us and become part of the fastest-growing community on Movement.
+                </p>
+                
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-6 relative z-10">
+                  <a 
+                    href="https://discord.gg/kShG4pkg"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full sm:w-auto bg-white text-black px-12 py-5 rounded-full font-xirod text-sm tracking-widest hover:scale-105 transition-all flex items-center justify-center gap-3"
+                  >
+                    DISCORD <MessageSquare size={18} />
+                  </a>
+                  <a 
+                    href="https://x.com/arctic_pengu1n"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full sm:w-auto bg-black text-white border border-white/10 px-12 py-5 rounded-full font-xirod text-sm tracking-widest hover:bg-zinc-900 transition-all flex items-center justify-center gap-3"
+                  >
+                    FOLLOW X <Twitter size={18} />
+                  </a>
+                </div>
+              </motion.div>
+            </div>
           </section>
         </div>
       </main>
