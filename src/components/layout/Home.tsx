@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { motion } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import { ArrowRight, Shield, Zap, Globe, Sparkles, Twitter, MessageSquare } from 'lucide-react';
 import { useSound } from '../../hooks/useSound';
 import logoImage from '../../assets/Zeus Penguin7.png';
@@ -16,7 +16,23 @@ interface HomeProps {
 }
 
 export const Home: React.FC<HomeProps> = ({ onStartCampaign }) => {
+  const [showTooltip, setShowTooltip] = React.useState(false);
   const { playClick } = useSound();
+  
+  React.useEffect(() => {
+    const timer = setTimeout(() => setShowTooltip(true), 2000);
+    
+    const handleScroll = () => {
+      if (window.scrollY > 50) setShowTooltip(false);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   const { nfts, isLoading: nftsLoading } = useGlobalArcticPenguins(12);
   
   const carouselOptions: EmblaOptionsType = { loop: true };
@@ -56,7 +72,7 @@ export const Home: React.FC<HomeProps> = ({ onStartCampaign }) => {
           animate={{ opacity: 1, x: 0 }}
           className="flex items-center gap-3"
         >
-          <img src={logoImage} alt="Puffer Logo" className="w-12 h-12 object-contain" />
+          <img src={logoImage} alt="Puffer Logo" className="w-12 h-12 object-contain rounded-xl" />
         </motion.div>
         
         <motion.div 
@@ -90,10 +106,31 @@ export const Home: React.FC<HomeProps> = ({ onStartCampaign }) => {
             disabled
             className="bg-white/10 text-white/40 px-4 sm:px-8 py-2.5 rounded-full text-[10px] sm:text-sm font-roboto tracking-wide cursor-not-allowed ml-1 sm:ml-4 border border-white/5 whitespace-nowrap"
           >
-            CAMPAGIN CLOSED
+            COMING SOON
           </button>
         </motion.div>
       </nav>
+
+      {/* Dynamic Whitelist Tooltip */}
+      <AnimatePresence>
+        {showTooltip && (
+          <motion.div
+            initial={{ opacity: 0, y: -20, x: '-50%' }}
+            animate={{ opacity: 1, y: 0, x: '-50%' }}
+            exit={{ opacity: 0, y: -20, x: '-50%' }}
+            className="fixed top-24 left-1/2 z-[100] pointer-events-none"
+          >
+            <div className="bg-white text-black px-4 py-2 rounded-xl shadow-2xl flex items-center gap-2 border border-white/20 whitespace-nowrap">
+              <div className="w-2 h-2 bg-black rounded-full animate-pulse" />
+              <p className="font-roboto font-bold text-[10px] tracking-widest uppercase">
+                1st Stage WL is live below! 👇
+              </p>
+              {/* Tooltip Arrow */}
+              <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-white rotate-45" />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Hero Section Content */}
       <main className="relative">
@@ -155,14 +192,11 @@ export const Home: React.FC<HomeProps> = ({ onStartCampaign }) => {
                     By connecting your fitness data to the Movement Network, we turn your physical activity into digital rewards. Compete with the colony, climb the leaderboard, and unlock exclusive Arctic Penguin benefits just by staying active.
                   </p>
                 <div className="pt-8 flex justify-center lg:justify-start">
-                    <a 
-                      href="https://pufferwalks.arcticpenguin.xyz/" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-3 bg-white text-black px-10 py-4 rounded-full font-xirod text-sm tracking-widest hover:scale-105 transition-transform"
+                    <div 
+                      className="inline-flex items-center gap-3 bg-white/10 text-white/30 px-10 py-4 rounded-full font-xirod text-sm tracking-widest blur-[2px] select-none cursor-not-allowed"
                     >
-                      EXPLORE APP <ArrowRight size={18} />
-                    </a>
+                      COMING SOON <ArrowRight size={18} />
+                    </div>
                   </div>
                 </div>
               </motion.div>
@@ -186,6 +220,49 @@ export const Home: React.FC<HomeProps> = ({ onStartCampaign }) => {
                     title="Puffer Walks App Preview"
                   />
                 </div>
+              </motion.div>
+            </div>
+          </section>
+          
+          {/* Test the App / Whitelist Section - Roadmap Card Style */}
+          <section className="mt-20 px-6">
+            <div className="max-w-xl mx-auto">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="relative p-8 rounded-[2rem] bg-zinc-900 border border-white/10 overflow-hidden group"
+              >
+                {/* Stage Indicator */}
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="px-3 py-1 rounded-full bg-white/10 border border-white/20">
+                    <p className="text-[10px] font-roboto tracking-[0.2em] text-white uppercase">Stage 01</p>
+                  </div>
+                  <div className="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent" />
+                </div>
+
+                <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                  <div className="flex-1">
+                    <h3 className="font-xirod text-xl tracking-[0.1em] text-white mb-2">
+                      App <span className="text-white">Tester WL</span>
+                    </h3>
+                    <p className="font-roboto text-white text-sm tracking-wide">
+                      Join the first wave of beta testers for Puffer Walks.
+                    </p>
+                  </div>
+                  
+                  <a 
+                    href="https://forms.gle/9fDGwSLKSsS49n5m6"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-white text-black px-8 py-3 rounded-full font-xirod text-[10px] tracking-widest hover:scale-105 transition-all whitespace-nowrap"
+                  >
+                    Join WL <ArrowRight size={14} className="inline ml-2" />
+                  </a>
+                </div>
+
+                {/* Subtle Glow */}
+                <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-white/5 blur-[40px] rounded-full pointer-events-none" />
               </motion.div>
             </div>
           </section>
@@ -288,9 +365,9 @@ export const Home: React.FC<HomeProps> = ({ onStartCampaign }) => {
       <footer className="relative z-10 border-t border-white/5 mt-32 py-16 px-6 md:px-12 max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-center gap-8">
           <div className="flex items-center gap-4">
-            <img src={logoImage} alt="Arctic Penguin" className="w-8 h-8 object-contain opacity-50" />
-            <p className="text-white/20 text-[10px] font-roboto tracking-widest uppercase">
-              © 2026 ARCTIC PENGUIN. ALL RIGHTS RESERVED.
+            <img src={logoImage} alt="Arctic Penguin" className="w-8 h-8 object-contain rounded-lg" />
+            <p className="text-white text-[10px] font-roboto tracking-widest">
+              © 2026 Arctic Penguin. All rights reserved.
             </p>
           </div>
           
@@ -299,11 +376,11 @@ export const Home: React.FC<HomeProps> = ({ onStartCampaign }) => {
               href="https://pufferwalks.arcticpenguin.xyz/privacy" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-white/20 hover:text-white/60 transition-all text-[10px] font-roboto tracking-widest uppercase"
+              className="text-white hover:text-white/60 transition-all text-[10px] font-roboto tracking-widest"
             >
               Privacy Policy
             </a>
-            <a href="#" className="text-white/20 hover:text-white/60 transition-all text-[10px] font-roboto tracking-widest uppercase">
+            <a href="#" className="text-white hover:text-white/60 transition-all text-[10px] font-roboto tracking-widest">
               Terms of Service
             </a>
           </div>
