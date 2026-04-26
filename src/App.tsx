@@ -13,7 +13,6 @@ import backgroundVideo from './assets/background.mp4';
 import rightImage from './assets/rightimage.png';
 import leftImage from './assets/leftimage.png';
 import { useReferral } from './hooks/useReferral';
-import { Analytics } from '@vercel/analytics/react';
 
 
 export default function App() {
@@ -127,7 +126,6 @@ export default function App() {
           <button className="text-white/60 font-medium text-xs md:text-sm">Dashboard</button>
         </motion.nav>
       )}
-      <Analytics />
     </div>
   );
 }
