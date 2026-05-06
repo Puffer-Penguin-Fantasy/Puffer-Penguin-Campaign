@@ -6,9 +6,11 @@ import { useSound } from '../../hooks/useSound';
 
 interface LandingProps {
   onWalletConnected: () => void;
+  onViewPortfolio: () => void;
+  onBack: () => void;
 }
 
-export const Landing: React.FC<LandingProps> = ({ onWalletConnected }) => {
+export const Landing: React.FC<LandingProps> = ({ onWalletConnected, onViewPortfolio, onBack }) => {
   const { connected, account, address, status } = useWallet();
   const [showModal, setShowModal] = useState(false);
   const { playClick } = useSound();
@@ -33,6 +35,23 @@ export const Landing: React.FC<LandingProps> = ({ onWalletConnected }) => {
       exit={{ opacity: 0 }}
       className="relative h-screen flex flex-col items-center justify-center overflow-hidden"
     >
+      {/* Minimalist Header for Landing */}
+      <nav className="absolute top-0 left-0 w-full z-50 flex items-center justify-end px-6 py-8 md:px-12 max-w-7xl mx-auto">
+        <div className="flex items-center gap-2">
+          <button 
+            onClick={() => { playClick(); onBack(); }}
+            className="text-white/60 hover:text-white px-4 py-2 rounded-full text-[10px] font-xirod tracking-[0.2em] transition-all bg-white/5 hover:bg-white/10 border border-white/5"
+          >
+            HOME
+          </button>
+          <button 
+            onClick={() => { playClick(); onViewPortfolio(); }}
+            className="text-white/60 hover:text-white px-4 py-2 rounded-full text-[10px] font-xirod tracking-[0.2em] transition-all bg-white/5 hover:bg-white/10 border border-white/5"
+          >
+            PORTFOLIO
+          </button>
+        </div>
+      </nav>
       <div className="relative z-20 text-center px-4 max-w-4xl">
         <motion.h1
           initial={{ y: 40, opacity: 0 }}

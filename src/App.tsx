@@ -8,6 +8,7 @@ import { NFTMint } from './components/mint/NFTMint';
 import { NFTVerify } from './components/mint/NFTVerify';
 import { Dashboard } from './components/dashboard/Dashboard';
 import { Home } from './components/layout/Home';
+import { Portfolio } from './components/layout/Portfolio';
 
 import backgroundVideo from './assets/background.mp4';
 import rightImage from './assets/rightimage.png';
@@ -35,7 +36,7 @@ export default function App() {
 
   // Handle global logout - redirect to landing (with a grace period for auto-connecters on refresh)
   useEffect(() => {
-    if (mounted && step !== 'landing' && step !== 'home') {
+    if (mounted && step !== 'landing' && step !== 'home' && step !== 'portfolio') {
       const gracePeriod = setTimeout(() => {
         if (!isConnecting && !isConnected) {
           setStep('home');
@@ -86,12 +87,21 @@ export default function App() {
         {step === 'home' && (
           <Home
             onStartCampaign={() => setStep('landing')}
+            onViewPortfolio={() => setStep('portfolio')}
+          />
+        )}
+
+        {step === 'portfolio' && (
+          <Portfolio
+            onBack={() => setStep('home')}
           />
         )}
 
         {step === 'landing' && (
           <Landing
             onWalletConnected={() => setStep('mint')}
+            onViewPortfolio={() => setStep('portfolio')}
+            onBack={() => setStep('home')}
           />
         )}
 

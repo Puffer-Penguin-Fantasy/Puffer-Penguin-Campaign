@@ -14,9 +14,10 @@ import { useGlobalArcticPenguins } from '../../hooks/useArcticPenguin';
 
 interface HomeProps {
   onStartCampaign: () => void;
+  onViewPortfolio: () => void;
 }
 
-export const Home: React.FC<HomeProps> = ({ onStartCampaign }) => {
+export const Home: React.FC<HomeProps> = ({ onStartCampaign, onViewPortfolio }) => {
   const [showTooltip, setShowTooltip] = React.useState(false);
   const { playClick } = useSound();
   
@@ -103,6 +104,18 @@ export const Home: React.FC<HomeProps> = ({ onStartCampaign }) => {
               <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
             </svg>
           </a>
+          <button 
+            onClick={() => { playClick(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+            className="text-white/60 hover:text-white px-4 py-2.5 rounded-full text-[10px] sm:text-xs font-xirod tracking-[0.2em] transition-all ml-1 sm:ml-4 border border-white/5 whitespace-nowrap bg-white/5 hover:bg-white/10"
+          >
+            HOME
+          </button>
+          <button 
+            onClick={() => { playClick(); onViewPortfolio(); }}
+            className="text-white/60 hover:text-white px-4 py-2.5 rounded-full text-[10px] sm:text-xs font-xirod tracking-[0.2em] transition-all ml-1 sm:ml-4 border border-white/5 whitespace-nowrap bg-white/5 hover:bg-white/10"
+          >
+            PORTFOLIO
+          </button>
           <button 
             disabled
             className="bg-white/10 text-white/40 px-4 sm:px-8 py-2.5 rounded-full text-[10px] sm:text-sm font-roboto tracking-wide cursor-not-allowed ml-1 sm:ml-4 border border-white/5 whitespace-nowrap"
