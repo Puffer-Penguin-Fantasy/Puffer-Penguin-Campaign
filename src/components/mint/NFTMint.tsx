@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { ExternalLink, ArrowRight } from 'lucide-react';
-import { useSound } from '../../hooks/useSound';
+
 
 interface NFTMintProps {
   rightImage: string;
@@ -16,7 +16,7 @@ export const NFTMint: React.FC<NFTMintProps> = ({
   onMint, 
   onContinue 
 }) => {
-  const { playClick } = useSound();
+
   return (
     <motion.div
       key="mint"
@@ -48,7 +48,7 @@ export const NFTMint: React.FC<NFTMintProps> = ({
             href="https://www.tradeport.xyz/movement/collection/0xf512c079941037aa3f8b6853d8f366ac1a70eaed7e2653ec9506e47ba199f861?tab=mint&bottomTab=trades"
             target="_blank"
             rel="noopener noreferrer"
-            onClick={() => { playClick(); onMint(); }}
+            onClick={() => { onMint(); }}
             className="rainbow-border w-full py-5 rounded-full text-lg md:text-xl font-medium flex items-center justify-center gap-3 hover:scale-[1.02] transition-transform"
           >
             <ExternalLink size={24} />
@@ -58,7 +58,7 @@ export const NFTMint: React.FC<NFTMintProps> = ({
           <motion.button
             initial={{ scale: 0.95, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            onClick={() => { playClick(); onContinue(); }}
+            onClick={() => { onContinue(); }}
             className="w-full py-5 rounded-full text-lg md:text-xl font-medium flex items-center justify-center gap-3 bg-white text-black hover:bg-white/90 transition-colors"
           >
             Go to Verification <ArrowRight size={24} />

@@ -16,7 +16,7 @@ interface NFTVerifyProps {
 
 export const NFTVerify: React.FC<NFTVerifyProps> = ({ leftImage, onVerified }) => {
   const { address } = useWallet();
-  const { playClick, playPointGained } = useSound();
+  const { playPointGained } = useSound();
   const { data, isLoading, error, refresh } = useArcticPenguin(address);
   const { getSavedReferrer, clearReferrer } = useReferral();
   const [verifyStatus, setVerifyStatus] = useState<'idle' | 'verifying' | 'success' | 'failed'>('idle');
@@ -134,7 +134,7 @@ export const NFTVerify: React.FC<NFTVerifyProps> = ({ leftImage, onVerified }) =
             <motion.button
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              onClick={() => { playClick(); onVerified(); }}
+              onClick={() => { onVerified(); }}
               className="rainbow-border w-full py-5 rounded-full text-white text-xl font-medium flex items-center justify-center gap-3 transition-all hover:scale-[1.02] active:scale-[0.98]"
             >
               Enter Dashboard <ArrowRight size={24} />
@@ -142,7 +142,7 @@ export const NFTVerify: React.FC<NFTVerifyProps> = ({ leftImage, onVerified }) =
           ) : (
             <div className="flex flex-col gap-3">
               <button
-                onClick={() => { playClick(); handleVerify(); }}
+                onClick={() => { handleVerify(); }}
                 disabled={verifyStatus === 'verifying'}
                 className="rainbow-border w-full py-5 rounded-full text-xl font-medium flex items-center justify-center gap-3 disabled:opacity-50 transition-all active:scale-[0.98]"
               >
@@ -151,7 +151,7 @@ export const NFTVerify: React.FC<NFTVerifyProps> = ({ leftImage, onVerified }) =
               
               {verifyStatus === 'failed' && (
                 <button
-                  onClick={() => { playClick(); refresh(); setVerifyStatus('idle'); }}
+                  onClick={() => { refresh(); setVerifyStatus('idle'); }}
                   className="w-full py-4 rounded-full bg-white/5 hover:bg-white/10 text-white/40 text-sm font-medium flex items-center justify-center gap-2 transition-all"
                 >
                   <RefreshCw size={16} /> Refresh Indexer

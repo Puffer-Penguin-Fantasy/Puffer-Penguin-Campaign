@@ -3,7 +3,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowRight, Shield, Zap, Globe, Sparkles, Twitter, MessageSquare } from 'lucide-react';
-import { useSound } from '../../hooks/useSound';
+
 import logoImage from '../../assets/Zeus Penguin7.png';
 import heroImage from '../../assets/hero.png';
 import heroPhoneImage from '../../assets/herophone.jpg';
@@ -19,7 +19,7 @@ interface HomeProps {
 
 export const Home: React.FC<HomeProps> = ({ onStartCampaign, onViewPortfolio }) => {
   const [showTooltip, setShowTooltip] = React.useState(false);
-  const { playClick } = useSound();
+
   
   React.useEffect(() => {
     const timer = setTimeout(() => setShowTooltip(true), 2000);
@@ -105,13 +105,13 @@ export const Home: React.FC<HomeProps> = ({ onStartCampaign, onViewPortfolio }) 
             </svg>
           </a>
           <button 
-            onClick={() => { playClick(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+            onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); }}
             className="text-white/60 hover:text-white px-4 py-2.5 rounded-full text-[10px] sm:text-xs font-xirod tracking-[0.2em] transition-all ml-1 sm:ml-4 border border-white/5 whitespace-nowrap bg-white/5 hover:bg-white/10"
           >
             HOME
           </button>
           <button 
-            onClick={() => { playClick(); onViewPortfolio(); }}
+            onClick={() => { onViewPortfolio(); }}
             className="text-white/60 hover:text-white px-4 py-2.5 rounded-full text-[10px] sm:text-xs font-xirod tracking-[0.2em] transition-all ml-1 sm:ml-4 border border-white/5 whitespace-nowrap bg-white/5 hover:bg-white/10"
           >
             PORTFOLIO
@@ -137,7 +137,7 @@ export const Home: React.FC<HomeProps> = ({ onStartCampaign, onViewPortfolio }) 
             <div className="bg-white text-black px-4 py-2 rounded-xl shadow-2xl flex items-center gap-2 border border-white/20 whitespace-nowrap">
               <div className="w-2 h-2 bg-black rounded-full animate-pulse" />
               <p className="font-roboto font-bold text-[10px] tracking-widest uppercase">
-                1st Stage WL is live below! 👇
+                Map WL Stage is live below! 👇
               </p>
               {/* Tooltip Arrow */}
               <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-white rotate-45" />
@@ -250,7 +250,7 @@ export const Home: React.FC<HomeProps> = ({ onStartCampaign, onViewPortfolio }) 
                 {/* Stage Indicator */}
                 <div className="flex items-center gap-3 mb-8">
                   <div className="px-4 py-2 rounded-full bg-white/10 border border-white/20">
-                    <p className="text-xs font-roboto tracking-[0.2em] text-white uppercase">Stage 01</p>
+                    <p className="text-xs font-roboto tracking-[0.2em] text-white/50 uppercase">Stage 01: Ended</p>
                   </div>
                   <div className="h-px flex-1 bg-gradient-to-r from-white/20 to-transparent" />
                 </div>
@@ -265,18 +265,58 @@ export const Home: React.FC<HomeProps> = ({ onStartCampaign, onViewPortfolio }) 
                     </p>
                   </div>
                   
-                  <a 
-                    href="https://forms.gle/9fDGwSLKSsS49n5m6"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-white text-black px-10 py-4 rounded-full font-xirod text-xs md:text-sm tracking-widest hover:scale-105 transition-all whitespace-nowrap"
+                  <div 
+                    className="bg-white/10 text-white/30 px-10 py-4 rounded-full font-xirod text-xs md:text-sm tracking-widest cursor-not-allowed whitespace-nowrap border border-white/5"
                   >
-                    Join WL <ArrowRight size={18} className="inline ml-2" />
-                  </a>
+                    ENDED
+                  </div>
                 </div>
 
                 {/* Subtle Glow */}
                 <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-white/5 blur-[40px] rounded-full pointer-events-none" />
+              </motion.div>
+            </div>
+          </section>
+
+          {/* Map Wl Stage - Ongoing */}
+          <section className="mt-12 px-6">
+            <div className="max-w-3xl mx-auto">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="relative p-10 md:p-14 rounded-[3rem] bg-zinc-900 border border-white/20 overflow-hidden group shadow-2xl"
+              >
+                {/* Stage Indicator */}
+                <div className="flex items-center gap-3 mb-8">
+                  <div className="px-4 py-2 rounded-full bg-white/20 border border-white/40">
+                    <p className="text-xs font-roboto tracking-[0.2em] text-white uppercase">Stage 02</p>
+                  </div>
+                  <div className="h-px flex-1 bg-gradient-to-r from-white/40 to-transparent" />
+                </div>
+
+                <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+                  <div className="flex-1">
+                    <h3 className="font-xirod text-2xl md:text-3xl tracking-[0.1em] text-white mb-4">
+                      Map <span className="text-white">Wl Stage</span>
+                    </h3>
+                    <p className="font-roboto text-white text-base md:text-lg tracking-wide leading-relaxed">
+                      Waddle your way into the next phase. Movers Map integration is here.
+                    </p>
+                  </div>
+                  
+                  <a 
+                    href="https://moversmap.xyz"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-white text-black px-10 py-4 rounded-full font-xirod text-xs md:text-sm tracking-widest hover:scale-105 transition-all whitespace-nowrap"
+                  >
+                    Ongoing..... <ArrowRight size={18} className="inline ml-2" />
+                  </a>
+                </div>
+
+                {/* Subtle Glow */}
+                <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-white/10 blur-[40px] rounded-full pointer-events-none" />
               </motion.div>
             </div>
           </section>
@@ -361,7 +401,7 @@ export const Home: React.FC<HomeProps> = ({ onStartCampaign, onViewPortfolio }) 
                 >
                   <p className="font-roboto font-black text-[8px] md:text-[10px] tracking-tighter mb-1 text-zinc-500 uppercase">Military Police</p>
                   <p className="font-roboto font-bold text-[10px] md:text-sm leading-tight italic">
-                    "HALT! Have you joined the 1st Stage Whitelist yet? Move it, recruit!"
+                    "HALT! Have you joined the Map Whitelist Stage yet? Move it, recruit!"
                   </p>
                 </motion.div>
               </motion.div>

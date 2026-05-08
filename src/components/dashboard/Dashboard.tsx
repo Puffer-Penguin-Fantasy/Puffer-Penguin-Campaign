@@ -26,7 +26,7 @@ interface QuestCardProps {
 const QuestCard: React.FC<QuestCardProps> = ({ 
   title, description, isCompleted, isLocked, icon, points, onAction, actionText, isVerifying 
 }) => {
-  const { playClick } = useSound();
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -62,7 +62,7 @@ const QuestCard: React.FC<QuestCardProps> = ({
 
           {!isCompleted && !isLocked && actionText && (
             <button
-              onClick={() => { playClick(); onAction?.(); }}
+              onClick={() => { onAction?.(); }}
               className="rainbow-border w-full sm:w-auto px-6 sm:px-8 py-2.5 sm:py-3 rounded-full text-white font-medium flex items-center justify-center gap-2 hover:scale-[1.05] transition-all disabled:opacity-50 text-sm sm:text-base"
             >
               {isVerifying ? (
@@ -87,7 +87,7 @@ const QuestCard: React.FC<QuestCardProps> = ({
 export const Dashboard: React.FC = () => {
   const { address } = useAccount();
   const { disconnect } = useWallet();
-  const { playClick, playPointGained } = useSound();
+  const { playPointGained } = useSound();
   const { data: arcticData, isLoading: arcticLoading } = useArcticPenguin(address);
   const [q2Status, setQ2Status] = useState<QuestStatus>('idle');
   const [q3Status, setQ3Status] = useState<QuestStatus>('idle');
@@ -275,7 +275,7 @@ export const Dashboard: React.FC = () => {
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              onClick={() => { playClick(); disconnect(); }}
+              onClick={() => { disconnect(); }}
               className="rainbow-border px-4 sm:px-8 py-2.5 sm:py-3 rounded-full flex items-center gap-2 sm:gap-3 font-mono text-xs sm:text-sm font-medium group transition-all"
             >
               <span className="rainbow-text font-bold text-[14px] sm:text-[16px] mr-1 sm:mr-2">
@@ -343,7 +343,7 @@ export const Dashboard: React.FC = () => {
 
               <div className="pt-8 border-t border-white/5">
                 <button 
-                  onClick={() => { playClick(); window.open('https://movement.tradeport.xyz', '_blank'); }}
+                  onClick={() => { window.open('https://movement.tradeport.xyz', '_blank'); }}
                   className="w-full py-4 rounded-xl glass border border-white/10 hover:border-white/20 transition-all flex items-center justify-center gap-2 text-sm font-medium group"
                 >
                   View on Marketplace <ExternalLink size={16} className="opacity-40 group-hover:opacity-100 transition-opacity" />
@@ -373,7 +373,7 @@ export const Dashboard: React.FC = () => {
               </p>
 
               <button
-                onClick={() => { playClick(); handleCopy(); }}
+                onClick={() => { handleCopy(); }}
                 className="w-full py-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 transition-all flex items-center justify-center gap-2 text-sm font-medium"
               >
                 {copied ? (
